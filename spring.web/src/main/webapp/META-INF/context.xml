@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+
+<WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+<Resource minIdle="2" maxActive="2" 
+url="jdbc:oracle:thin:@127.0.0.1:1521:xe" 
+factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory" 
+driverClassName="oracle.jdbc.driver.OracleDriver" 
+password="hr" 
+username="hr" 
+type="javax.sql.DataSource" 
+auth="Container" 
+name="jdbc/hr"/>
+
+</Context>

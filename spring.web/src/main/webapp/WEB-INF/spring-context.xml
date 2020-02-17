@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd 
+	http://mybatis.org/schema/mybatis-spring 
+	http://mybatis.org/schema/mybatis-spring.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	 http://www.springframework.org/schema/aop 
+	 http://www.springframework.org/schema/aop/spring-aop.xsd"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://www.springframework.org/schema/beans">
+
+ <context:component-scan base-package="spring.web" />
+ <mvc:annotation-driven />
+ <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+ 	<property name="prefix" value="/WEB-INF/views/"/>
+	<property name="suffix" value=".jsp"></property>
+ </bean>
+
+<!-- ch02: resource -->
+<mvc:resources location="/WEB-INF/resources/img/" mapping="/img/**"/>
+<mvc:resources location="/WEB-INF/resources/css/" mapping="/css/**"/>
+<mvc:resources location="/WEB-INF/resources/js/" mapping="/js/**"/>
+
+<!-- mybatis -->
+<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+	<property name="jndiName" value="java:comp/env/jdbc/hr"/>
+	<property name="resourceRef" value="true"/>
+</bean>
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="dataSource"/>
+	<property name="configLocation"
+		value="classpath:spring/web/ch04/config/SqlMapConfig.xml" />
+	<property name="mapperLocations">
+		<array>
+			<value>classpath:spring/web/**/dao/mapper/**/*.xml</value>
+		</array>
+		
+	</property>
+</bean>
+	<mybatis:scan base-package="spring.web.**.dao.mapper"/>
+
+<!-- ajax -->
+<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	<property name="messageConverters">
+		<list>
+			<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+		</list>
+	</property>
+</bean>
+
+</beans>
